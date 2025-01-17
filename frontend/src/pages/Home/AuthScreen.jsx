@@ -5,8 +5,6 @@ import { ChevronRight } from 'lucide-react'
 const AuthScreen = () => {
   const [email, setEmail] = useState("");
 
-  const a = 10;
-
   return (
     <div className="hero-bg relative">
 
