@@ -1,18 +1,24 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuthStore } from "../store/authUser";
 
 const SignupPage = () => {
-  const [email, setEmail] = useState("");
+  const { searchParams } = new URL(document.location);
+  const emailValue = searchParams.get("email");
+
+  const [email, setEmail] = useState(emailValue || "");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const { signup } = useAuthStore();
+
   const handleSignup = (e) => {
     e.preventDefault();
-    console.log(email, username, password);
-  }
+    signup({ email, username, password });
+  };
 
   return (
-    <div className="h-screen w-full hero-bg" >
+    <div className="h-screen w-full hero-bg">
       <header className="max-w-6xl mx-auto flex items-center justify-between p-4">
         <Link to={"/"}>
           <img src="/netflix-logo.png" alt="logo" className="w-52" />
@@ -27,12 +33,16 @@ const SignupPage = () => {
 
           <form className="space-y-4" onSubmit={handleSignup}>
             <div>
-              <label htmlFor="email" className="text-sm font-medium text-gray-300 block">
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-300 block"
+              >
                 Email
               </label>
-              <input type="email"
+              <input
+                type="email"
                 className="w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white
-                focus:outline-none focus:ring" 
+                focus:outline-none focus:ring"
                 placeholder="you@example.com"
                 id="email"
                 value={email}
@@ -41,12 +51,16 @@ const SignupPage = () => {
             </div>
 
             <div>
-              <label htmlFor="username" className="text-sm font-medium text-gray-300 block">
+              <label
+                htmlFor="username"
+                className="text-sm font-medium text-gray-300 block"
+              >
                 Username
               </label>
-              <input type="text"
+              <input
+                type="text"
                 className="w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white
-                focus:outline-none focus:ring" 
+                focus:outline-none focus:ring"
                 placeholder="john"
                 id="username"
                 value={username}
@@ -55,12 +69,16 @@ const SignupPage = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="text-sm font-medium text-gray-300 block">
+              <label
+                htmlFor="password"
+                className="text-sm font-medium text-gray-300 block"
+              >
                 Password
               </label>
-              <input type="password"
+              <input
+                type="password"
                 className="w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white
-                focus:outline-none focus:ring" 
+                focus:outline-none focus:ring"
                 placeholder="•••••••"
                 id="password"
                 value={password}
@@ -68,12 +86,13 @@ const SignupPage = () => {
               />
             </div>
 
-            <button className="w-full py-2 bg-red-600 text-white font-semibold rounded-md
+            <button
+              className="w-full py-2 bg-red-600 text-white font-semibold rounded-md
               hover:bg-red-700
-            ">
+            "
+            >
               Sign Up
             </button>
-
           </form>
           <div className="text-center text-gray-400">
             Already a member?{" "}
@@ -83,9 +102,8 @@ const SignupPage = () => {
           </div>
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default SignupPage
+export default SignupPage;
