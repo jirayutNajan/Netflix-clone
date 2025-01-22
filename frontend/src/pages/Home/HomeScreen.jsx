@@ -3,11 +3,17 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import useGetTrendingContent from "../../hooks/useGetTrendingContent";
 
-import { ORIGINAL_IMAGE_BASE_URL } from '../../utils/constants'
+import MovieSlider from "../../components/MovieSlider";
+
+import { MOVIE_CATEGORIES, ORIGINAL_IMAGE_BASE_URL, TV_CATEGORIES } from '../../utils/constants'
+import { userContentStore } from "../../store/content";
+import { useState } from "react";
 
 const Homescreen = () => {
   const { trendingContent } = useGetTrendingContent();
   console.log(trendingContent);
+  const { contentType } = userContentStore();
+  const [imgLoading, setImgLoading] = useState(true);
 
   if(!trendingContent) { // ถ้ายังเป็น null คือโหลดยังไม่เสร็จ
     return (
@@ -25,10 +31,15 @@ const Homescreen = () => {
       <div className="relative h-screen text-white">
         <Navbar />
 
+        {imgLoading && (
+          <div className="absolute top-0 left-0 w-full bg-black/70 flex items-center justify-center shimmer -z-10" />
+        )}
+
         <img
           src={ORIGINAL_IMAGE_BASE_URL + trendingContent?.backdrop_path}
           alt="Hero img"
           className="absolute top-0 left-0 w-full h-full object-cover -z-50"
+          onLoad={() => setImgLoading(false)}
         />
 
         <div
@@ -72,6 +83,14 @@ const Homescreen = () => {
           </div>
 
         </div>
+      </div>
+
+      <div className="flex flex-col gap-10 bg-black py-10">
+        {contentType === "movie" ? (
+          MOVIE_CATEGORIES.map((category) => <MovieSlider key={category} category={category} />)
+        ) : (
+          TV_CATEGORIES.map((category) => <MovieSlider key={category} category={category} />)
+        ) }
       </div>
     </>
   );
