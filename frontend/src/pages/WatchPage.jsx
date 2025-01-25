@@ -6,14 +6,8 @@ import Navbar from "../components/Navbar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ReactPlayer from "react-player";
 import { ORIGINAL_IMAGE_BASE_URL, SMALL_IMAGE_BASE_URL } from "../utils/constants";
-
-function formatReleaseDate(date) {
-  return new Date(date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  })
-}
+import { formatReleaseDate } from "../utils/dateFunction";
+import WatchPageSkeleton from "../components/skeletons/WatchPageSkeleton";
 
 const WatchPage = () => {
   const { id } = useParams();
@@ -54,6 +48,8 @@ const WatchPage = () => {
           console.log("No Trailer Found");
           setSimilarContent([]);
         }
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -69,7 +65,7 @@ const WatchPage = () => {
       } catch (error) {
         if(error.message.includes('404')) {
           console.log("No Trailer Found");
-          setContent({});
+          setContent(null);
         }
       }
     }
@@ -98,6 +94,27 @@ const WatchPage = () => {
       sliderRef.current.scrollBy({left: sliderRef.current.offsetWidth, behavior: 'smooth'});
     } 
   };
+
+  if(loading) {
+    return (
+      <div className="min-h-screen bg-black p-10">
+        <WatchPageSkeleton />
+      </div>
+    )
+  }
+
+  if(!content){
+    return (
+      <div className="bg-black text-white h-screen">
+        <div className="max-w-6xl mx-auto">
+          <Navbar />
+          <div className="text-center mx-auto px-4 py-8 h-full mt-40">
+            <h2 className="text-2xl sm:text-5xl font-bold text-balance">Content not found 🥲</h2>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="bg-black min-h-screen text-white">
@@ -128,17 +145,19 @@ const WatchPage = () => {
           </div>
         )}
 
-        <div className="aspect-video mb-8 p-2 sm:px-6 md:px-32">
-          {trailers.length > 0 && (
-            <ReactPlayer 
-              controls={true}
-              width={"100%"}
-              height={"70vh"}
-              className="mx-auto overflow-hidden rounded-lg"
-              url={`https://www.youtube.com/watch?v=${trailers[currentTrailerIdx].key}`}
-            />
-          )}
-        </div>
+        {trailers.length > 0 && (
+          <div className="aspect-video mb-8 p-2 sm:px-6 md:px-32">
+            {trailers.length > 0 && (
+              <ReactPlayer 
+                controls={true}
+                width={"100%"}
+                height={"70vh"}
+                className="mx-auto overflow-hidden rounded-lg"
+                url={`https://www.youtube.com/watch?v=${trailers[currentTrailerIdx].key}`}
+              />
+            )}
+          </div>
+        )}
 
         {trailers?.length === 0 && (
           <h2 className="text-xl text-center mt-5">
@@ -164,7 +183,7 @@ const WatchPage = () => {
           </p>
           <p className="mt-4 text-lg">{content?.overview}</p>
         </div>
-        <img src={ORIGINAL_IMAGE_BASE_URL + content.poster_path} alt="Poster image" 
+        <img src={ORIGINAL_IMAGE_BASE_URL + content?.poster_path} alt="Poster image" 
           className="max-h-[600px] rounded-md" 
         />
       </div>
