@@ -3,6 +3,8 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/Home/HomePage";
 import SignupPage from "./pages/SignupPage";
 import Footer from "./components/footer";
+import WatchPage from "./pages/WatchPage";
+
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authUser";
 import { useEffect } from "react";
@@ -31,6 +33,7 @@ const app = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={ !user ? <LoginPage /> : <Navigate to={"/"} /> } />
         <Route path="/signup" element={ !user ? <SignupPage /> : <Navigate to={"/"} /> } />
+        <Route path="/watch/:id" element={ user ? <WatchPage /> : <Navigate to={"/login"} /> } />
       </Routes>
       <Footer />
       <Toaster />
