@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/Home/HomePage";
 import SignupPage from "./pages/SignupPage";
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
 import WatchPage from "./pages/WatchPage";
 import SearchPage from "./pages/SearchPage";
 import SearchHistoryPage from "./pages/SearchHistoryPage";
