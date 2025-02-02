@@ -29,7 +29,7 @@ const SearchPage = () => {
         setActiveTab(tabSearch);
       }
     }
-  }, [searchParams]);
+  }, []);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -44,6 +44,7 @@ const SearchPage = () => {
     const toSearch = searchQuery || searchTerm;
     const category = tab || activeTab;
 
+    setContentType(category);
     setSearchParams({ search: toSearch, tab: category });
 
     try {
