@@ -15,7 +15,7 @@ export const searchPerson = async (req, res) => {
     }
 
     // req.user มาจาก protect route
-    if(req.user.searchHistory[req.user.searchHistory.length-1].id !== response.results[0].id){
+    if(req.user.searchHistory[req.user.searchHistory.length-1]?.id !== response.results[0].id){
       await User.findByIdAndUpdate(req.user._id, {
         $push: { // เนื่องจาก seachHistory เป็น array เลย push ได้และ ไม่ได้กำหนด type ข้างในเลยเป็นอะไรก็ได้
           searchHistory: { // results[0] คือเอาแค่คนแรก คนที่เกี่ยวข้องที่สุด
@@ -48,7 +48,7 @@ export const searchMovie = async (req, res) => {
       return res.status(404).send(null);
     }
 
-    if(req.user.searchHistory[req.user.searchHistory.length-1].id !== response.results[0].id) {
+    if(req.user.searchHistory[req.user.searchHistory.length-1]?.id !== response.results[0].id) {
       await User.findByIdAndUpdate(req.user._id, {
         $push: {
           searchHistory: {
@@ -81,7 +81,7 @@ export const searchTv = async (req, res) => {
       return res.status(404).send(null);
     }
 
-    if(req.user.searchHistory[req.user.searchHistory.length-1].id !== response.results[0].id){
+    if(req.user.searchHistory[req.user.searchHistory.length-1]?.id !== response.results[0].id){
       await User.findByIdAndUpdate(req.user._id, {
         $push: {
           searchHistory: {
